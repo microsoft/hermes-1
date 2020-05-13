@@ -20,6 +20,7 @@ target_link_libraries(hermesc
   hermesFrontend
   hermesParser
   hermesSupport
+  hermesPlatform
 )
 
 hermes_link_icu(hermesc)

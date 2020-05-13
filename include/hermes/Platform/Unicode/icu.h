@@ -22,7 +22,7 @@
 #include "unicode/uniset.h"
 #include "unicode/unorm2.h"
 #include "unicode/ustring.h"
-#elif defined(USE_WIN10_ICU)
+#elif defined(USE_WIN10_ICU) || defined(__IS_UWP__)
 #define U_DISABLE_RENAMING 1
 #define U_SHOW_CPLUSPLUS_API 0
 #define U_DEFAULT_SHOW_DRAFT 0

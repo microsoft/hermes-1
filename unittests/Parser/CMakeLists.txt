@@ -19,4 +19,5 @@ target_link_libraries(HermesParserTests
  hermesAST
  hermesParser
  hermesSupport
+ hermesPlatform
  )

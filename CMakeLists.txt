@@ -234,6 +234,14 @@ else()
   set(DEFAULT_INTERPRETER_THREADING OFF)
 endif()
 
+# Hermes UWP build (Universal Windows Platform)
+set(IS_UWP OFF CACHE BOOL
+  "Is building for Universal Windows Platform")
+
+if (IS_UWP)
+  add_definitions(-D__IS_UWP__)
+endif()
+
 # Check if the linker supports --gc-sections
 # We can't simply CHECK_CXX_COMPILER_FLAG("-Wl,--gc-sections" ..) because CMake
 # will compile and link separately and only passes the flag during compilation.
@@ -393,6 +401,12 @@ elseif(EMSCRIPTEN)
   set(ICU_FOUND 1)
 endif()
 
+if (IS_UWP)
+  set(ICU_FOUND 1)
+  set(ICU_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/icu_decls)
+  include_directories(${ICU_INCLUDE_DIRS})
+endif()
+
 if (NOT ICU_FOUND)
   # Workaround: FindICU does not correctly recognize ICU include dir until
   # CMake 3.8.0.  https://github.com/Kitware/CMake/commit/cdf7e5d8
@@ -527,12 +541,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(external/llvh)
+
+if (NOT IS_UWP)
 add_subdirectory(utils/hermes-lit)
 add_subdirectory(tools)
+endif()
+
 add_subdirectory(include)
 add_subdirectory(lib)
 add_subdirectory(external)
+
+if (NOT IS_UWP)
 add_subdirectory(unittests)
+endif()
+
 add_subdirectory(API)
 
 # Make sure JSI is compiled with PIC
@@ -545,6 +567,7 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/facebook)
     add_subdirectory(facebook)
 endif()
 
+if (NOT IS_UWP)
 # Configure the test suites
 #
 list(APPEND HERMES_TEST_DEPS
@@ -634,3 +657,5 @@ add_custom_command(
 add_custom_target(
   github-cli-release
   DEPENDS ${HERMES_GITHUB_DIR}/${HERMES_CLI_GITHUB_FILE})
+
+endif()

@@ -24,8 +24,14 @@ def build_dir_suffix(args):
         suffices += ["ubsan"]
     if args.distribute:
         suffices += ["release"]
+    if args.is_arm:
+        suffices += ["arm"]
     if args.is_32_bit:
         suffices += ["32"]
+    else:
+        suffices += ["64"]
+    if args.is_uwp:
+        suffices += ["uwp"]
     if args.wasm:
         suffices += ["wasm", args.emscripten_platform]
     return ("_" + "_".join(suffices)) if suffices else ""
@@ -52,7 +58,7 @@ def parse_args():
         "--build-type",
         type=str,
         dest="build_type",
-        choices=["MinSizeRel", "Debug"],
+        choices=["RelWithDebInfo", "MinSizeRel", "Debug"],
         default=None,
         help="Optimization level of build",
     )
@@ -64,6 +70,8 @@ def parse_args():
     )
     parser.add_argument("--distribute", action="store_true")
     parser.add_argument("--32-bit", dest="is_32_bit", action="store_true")
+    parser.add_argument("--arm", dest="is_arm", action="store_true")
+    parser.add_argument("--arm64", dest="is_arm64", action="store_true")
     parser.add_argument("--enable-asan", dest="enable_asan", action="store_true")
     parser.add_argument("--enable-ubsan", dest="enable_ubsan", action="store_true")
     parser.add_argument("--icu", type=str, dest="icu_root", default="")
@@ -94,6 +102,9 @@ def parse_args():
         help="Use either the upstream emscripten backend based on LLVM or the "
         "fastcomp backend",
     )
+    parser.add_argument("--uwp", dest="is_uwp", action="store_true")
+    parser.add_argument("--configure-only", dest="is_configure_only", action="store_true")
+
     args = parser.parse_args()
     if args.icu_root:
         args.icu_root = os.path.realpath(args.icu_root)
@@ -114,7 +125,8 @@ def parse_args():
     if not args.build_type:
         if args.distribute:
             # WASM doesn't need to be built to be small.
-            args.build_type = "Release" if args.wasm else "MinSizeRel"
+            # args.build_type = "Release" if args.wasm else "MinSizeRel"
+            args.build_type = "RelWithDebInfo"
         else:
             args.build_type = "Debug"
 
@@ -215,6 +227,21 @@ def main():
         and "Visual Studio" in args.build_system
     ):
         cmake_flags += ["-Thost=x64"]
+    if platform.system() == "Windows":
+        if args.is_arm:
+            if args.is_32_bit:
+                cmake_flags += ["-A", "ARM"]
+            else:
+                cmake_flags += ["-A", "ARM64"]
+        else:
+            if args.is_32_bit:
+                cmake_flags += ["-A", "Win32"]
+            else:
+                cmake_flags += ["-A", "x64"]
+#    if args.is_uwp:
+#        cmake_flags += ["-DCMAKE_SYSTEM_NAME=WindowsStore", "-DCMAKE_SYSTEM_VERSION=10.0"]
+    if platform.system() == "Windows":
+        cmake_flags += ["-DHERMESVM_PLATFORM_LOGGING=ON"]
     if args.opcode_stats:
         cmake_flags += ["-DHERMESVM_PROFILER_OPCODE=ON"]
     if args.basic_block_profiler:
@@ -253,6 +280,9 @@ def main():
         "Windows",
     ):
         raise Exception("No ICU path provided on sandcastle")
+
+    if args.is_uwp:
+        cmake_flags += ["-DIS_UWP=On"]
 
     print("CMake flags: {}".format(" ".join(cmake_flags)))
     hermes_src_dir = os.path.realpath(__file__)

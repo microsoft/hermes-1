@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<instrumentationManifest xsi:schemaLocation="http://schemas.microsoft.com/win/2004/08/events eventman.xsd" xmlns="http://schemas.microsoft.com/win/2004/08/events" xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:trace="http://schemas.microsoft.com/win/2004/08/events/trace">
+	<instrumentation>
+		<events>
+			<provider name="Hermes-Provider" guid="{26B0B1A3-9172-4F25-A740-FE5ED5D69EAB}" symbol="HERMES_PROVIDER" resourceFileName="D:\github\hermes_0.2.1\etw\hermes_etw_res.dll" messageFileName="D:\github\hermes_0.2.1\etw\hermes_etw_res.dll">
+				<events>
+					<event symbol="GENERIC_EVENT" value="1" version="0" level="win:Informational" task="GenericTask" opcode="GenericOp" template="GenericType"></event>
+				</events>
+				<levels></levels>
+				<tasks>
+					<task name="GenericTask" value="1" eventGUID="{00000000-0000-0000-0000-000000000000}"></task>
+				</tasks>
+				<opcodes>
+					<opcode name="GenericOp" symbol="GENERIC_OP" value="10"></opcode>
+				</opcodes>
+				<templates>
+					<template tid="GenericType">
+						<data name="eventName" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg0" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg1" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg2" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg3" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg4" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg5" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg6" inType="win:AnsiString" outType="xs:string"></data>
+						<data name="arg7" inType="win:AnsiString" outType="xs:string"></data>
+					</template>
+				</templates>
+			</provider>
+		</events>
+	</instrumentation>
+	<localization>
+		<resources culture="en-US">
+			<stringTable>
+				<string id="opcode.Info" value="Info"></string>
+				<string id="level.Informational" value="Information"></string>
+			</stringTable>
+		</resources>
+	</localization>
+</instrumentationManifest>

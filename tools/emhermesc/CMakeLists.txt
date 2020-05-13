@@ -8,7 +8,7 @@ set(HERMES_LINK_COMPONENTS LLVHSupport)
 add_hermes_tool(emhermesc
   emhermesc.cpp
   ${ALL_HEADER_FILES}
-  LINK_LIBS hermesHBCBackend
+  LINK_LIBS hermesHBCBackend hermesPlatform
   )
 
 if (EMSCRIPTEN)

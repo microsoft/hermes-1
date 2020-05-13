@@ -210,7 +210,9 @@ int32_t weekDay(double t) {
 double localTZA() {
 #ifdef _WINDOWS
 
+#ifndef __IS_UWP__
   _tzset();
+#endif
 
   long gmtoff;
   int err = _get_timezone(&gmtoff);

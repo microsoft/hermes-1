@@ -3,12 +3,9 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
-add_hermes_library(hermesPlatform
-        Logging.cpp
+set(source_files
+  dllmain.cpp
+  stubs.cpp
 )
 
-add_subdirectory(Unicode)
-
-if (IS_UWP)
-  add_subdirectory(uwp)
-endif()
+add_hermes_library(hermesPlatformUWP STATIC ${source_files})

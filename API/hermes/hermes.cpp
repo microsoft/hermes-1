@@ -67,6 +67,12 @@
 #include <jsi/instrumentation.h>
 #include <jsi/threadsafe.h>
 
+#if defined(_MSC_VER)
+#define NOMINMAX
+#include <windows.h>
+#include <hermes/Platform/etw/hermes_etw.h>
+#endif
+
 #ifdef HERMESVM_LLVM_PROFILE_DUMP
 extern "C" {
 int __llvm_profile_dump(void);
@@ -274,6 +280,10 @@ class HermesRuntimeImpl final : public HermesRuntime,
         runtime_(*rt_),
 #endif
         crashMgr_(runtimeConfig.getCrashMgr()) {
+
+#if defined(_MSC_VER)
+      EventRegisterHermes_Provider();
+#endif
     compileFlags_.optimize = false;
 #ifdef HERMES_ENABLE_DEBUGGER
     compileFlags_.debug = true;
@@ -2066,7 +2076,7 @@ class HermesMutex : public std::recursive_mutex {
 
 } // namespace
 
-__declspec(dllexport) std::unique_ptr<HermesRuntime> makeHermesRuntime(
+__declspec(dllexport) std::unique_ptr<HermesRuntime> __cdecl  makeHermesRuntime(
     const vm::RuntimeConfig &runtimeConfig) {
   // This is insurance against someone adding data members to
   // HermesRuntime.  If on some weird platform it fails, it can be

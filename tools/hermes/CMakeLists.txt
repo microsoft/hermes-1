@@ -38,6 +38,7 @@ target_link_libraries(hermes
   hermesSupport
   dtoa
   hermesInstrumentation
+  hermesPlatform
   ${CORE_FOUNDATION}
   ${LIBREADLINE}
 )
