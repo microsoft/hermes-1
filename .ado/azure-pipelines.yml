@@ -137,6 +137,7 @@ jobs:
           buildProperties: CommitId=$(Build.SourceVersion);nugetroot=$(System.DefaultWorkingDirectory)\HermesArtifacts;RepoUri=$(Build.Repository.Uri)
           versioningScheme: byEnvVar
           versionEnvVar: Version
+          includeSymbols: true
 
       - task: PublishBuildArtifacts@1
         displayName: "Publish final nuget artifacts"
