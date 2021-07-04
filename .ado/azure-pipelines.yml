@@ -1,10 +1,10 @@
 name: 0.0.$(Date:yyMM.d)$(Rev:rrr)
 
 trigger:
-  - master
+  - 0.8.0-tmp
 
 pr:
-  - master
+  - 0.8.0-tmp
 
 pool:
   vmImage: 'windows-latest'
@@ -65,24 +65,24 @@ jobs:
     displayName: (Publish) Build the Hermes binary for supported architectures and flavors
     strategy:
       matrix:
-        DebugX64:
-          BuildConfiguration: debug
-          BuildPlatform: x64
+        # DebugX64:
+        #   BuildConfiguration: debug
+        #   BuildPlatform: x64
         DebugX86:
           BuildConfiguration: debug
           BuildPlatform: x86
-        DebugARM64:
-          BuildConfiguration: debug
-          BuildPlatform: arm64
-        ReleaseX64:
-          BuildConfiguration: release
-          BuildPlatform: x64
-        ReleaseX86:
-          BuildConfiguration: release
-          BuildPlatform: x86
-        ReleaseARM64:
-          BuildConfiguration: release
-          BuildPlatform: arm64
+        # DebugARM64:
+        #   BuildConfiguration: debug
+        #   BuildPlatform: arm64
+        # ReleaseX64:
+        #   BuildConfiguration: release
+        #   BuildPlatform: x64
+        # ReleaseX86:
+        #   BuildConfiguration: release
+        #   BuildPlatform: x86
+        # ReleaseARM64:
+        #   BuildConfiguration: release
+        #   BuildPlatform: arm64
 
     steps:
       - task: PowerShell@2
