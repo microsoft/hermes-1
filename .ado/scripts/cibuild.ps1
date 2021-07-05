@@ -348,6 +348,10 @@ function Copy-Sources($SourcesPath, $WorkSpacePath, $OutputPath, $Platform, $Con
         New-Item -ItemType "directory" -Path "$OutputPath\src\external\" | Out-Null
     }
 
+    if (!(Test-Path -Path "$OutputPath\src\external\llvh")) {
+        New-Item -ItemType "directory" -Path "$OutputPath\src\external\llvh" | Out-Null
+    }
+
     if (!(Test-Path -Path "$OutputPath\src\include\")) {
         New-Item -ItemType "directory" -Path "$OutputPath\src\include\" | Out-Null
     }
@@ -361,7 +365,7 @@ function Copy-Sources($SourcesPath, $WorkSpacePath, $OutputPath, $Platform, $Con
     }
 
     Copy-Item "$SourcesPath\API\*" -Destination "$OutputPath\src\API\" -force -Recurse
-    Copy-Item "$SourcesPath\external\*" -Destination "$OutputPath\src\external\" -force -Recurse
+    Copy-Item "$SourcesPath\external\llvh\*" -Destination "$OutputPath\src\external\llvh\" -force -Recurse # TODO :: Scope it.
     Copy-Item "$SourcesPath\include\*" -Destination "$OutputPath\src\include\" -force -Recurse
     Copy-Item "$SourcesPath\lib\*" -Destination "$OutputPath\src\lib\" -force -Recurse
     Copy-Item "$SourcesPath\public\*" -Destination "$OutputPath\src\public\" -force -Recurse

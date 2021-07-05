@@ -1,5 +1,5 @@
 {
-  "version": "0.8.0-staging4",
+  "version": "0.8.0-tmp1",
   "scripts": {
     "unpack-builds": "node unpack-builds.js",
     "unpack-builds-dev": "node unpack-builds.js --dev",
