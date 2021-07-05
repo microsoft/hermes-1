@@ -290,7 +290,7 @@ function Invoke-BuildAndCopy($SourcesPath, $WorkSpacePath, $OutputPath, $Platfor
     }
     Copy-Item "$compilerAndToolsBuildPath\bin\hermes.exe" -Destination $toolsPath
 
-    $flagsPath = "$OutputPath\build\flags\$Triplet"
+    $flagsPath = "$OutputPath\build\native\flags\$Triplet"
     if (!(Test-Path -Path $flagsPath)) {
         New-Item -ItemType "directory" -Path $flagsPath | Out-Null
     }
@@ -397,6 +397,7 @@ function Prepare-NugetPackage($SourcesPath, $WorkSpacePath, $OutputPath, $Platfo
     $npmPackage = (Get-Content (Join-Path $SourcesPath "npm\package.json") | Out-String | ConvertFrom-Json).version
 
     (Get-Content "$SourcesPath\.ado\ReactNative.Hermes.Windows.nuspec") -replace ('VERSION_DETAILS', "Hermes version: $npmPackage; Git revision: $gitRevision") | Set-Content "$OutputPath\ReactNative.Hermes.Windows1.nuspec"
+    (Get-Content "$SourcesPath\.ado\ReactNative.Hermes.Windows.Fat.nuspec") -replace ('VERSION_DETAILS', "Hermes version: $npmPackage; Git revision: $gitRevision") | Set-Content "$OutputPath\ReactNative.Hermes.Windows1.Fat.nuspec"
 
     $npmPackage | Set-Content "$OutputPath\version"
 }
@@ -441,7 +442,7 @@ Write-Output "RN_DIR: $RN_DIR"
 Copy-Headers -SourcesPath $SourcesPath -WorkSpacePath $WorkSpacePath -OutputPath $OutputPath -Platform $Plat -Configuration $Config -AppPlatform $AppPlatform -RNDIR $RN_DIR -FOLLYDIR $FOLLY_DIR -BOOSTDIR $BOOST_DIR
 
 # Copy sources
-Copy-Sources -SourcesPath $SourcesPath -WorkSpacePath $WorkSpacePath -OutputPath $OutputPath -Platform $Plat -Configuration $Config -AppPlatform $AppPlatform
+# Copy-Sources -SourcesPath $SourcesPath -WorkSpacePath $WorkSpacePath -OutputPath $OutputPath -Platform $Plat -Configuration $Config -AppPlatform $AppPlatform
 
 # run the actual builds and copy artefacts
 foreach ($Plat in $Platform) {
