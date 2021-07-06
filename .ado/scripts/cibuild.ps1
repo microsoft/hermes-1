@@ -284,7 +284,8 @@ function Invoke-BuildAndCopy($SourcesPath, $WorkSpacePath, $OutputPath, $Platfor
         Copy-Item "$buildPathWithDebugger\API\inspector\hermesinspector.pdb" -Destination $finalOutputPathWithDebugger -force | Out-Null
     }
 
-    New-Item -FilePath "$OutputPath\lib\uap\_._" | Out-Null
+    New-Item -ItemType "directory" -Path "$OutputPath\lib\uap\" | Out-Null
+    New-Item -Name "$OutputPath\lib\uap\_._" -ItemType File
 
     $toolsPath = "$OutputPath\tools\native\$toolsConfiguration\$toolsPlatform"
     if (!(Test-Path -Path $toolsPath)) {
