@@ -284,6 +284,8 @@ function Invoke-BuildAndCopy($SourcesPath, $WorkSpacePath, $OutputPath, $Platfor
         Copy-Item "$buildPathWithDebugger\API\inspector\hermesinspector.pdb" -Destination $finalOutputPathWithDebugger -force | Out-Null
     }
 
+    New-Item -FilePath "$OutputPath\lib\uap\_._" | Out-Null
+
     $toolsPath = "$OutputPath\tools\native\$toolsConfiguration\$toolsPlatform"
     if (!(Test-Path -Path $toolsPath)) {
         New-Item -ItemType "directory" -Path $toolsPath | Out-Null
@@ -385,10 +387,10 @@ function Prepare-NugetPackage($SourcesPath, $WorkSpacePath, $OutputPath, $Platfo
     Copy-Item "$SourcesPath\LICENSE" -Destination "$OutputPath\license\" -force 
     Copy-Item "$SourcesPath\.ado\ReactNative.Hermes.Windows.targets" -Destination "$OutputPath\build\native\" -force
 
-    if (!(Test-Path -Path "$OutputPath\build\netstandard1.0\")) {
-        New-Item -ItemType "directory" -Path "$OutputPath\build\netstandard1.0\" | Out-Null
+    if (!(Test-Path -Path "$OutputPath\build\uap\")) {
+        New-Item -ItemType "directory" -Path "$OutputPath\build\uap\" | Out-Null
     }
-    Copy-Item "$SourcesPath\.ado\ReactNative.Hermes.Windows.Net.targets" -Destination "$OutputPath\build\netstandard1.0\ReactNative.Hermes.Windows.targets" -force
+    Copy-Item "$SourcesPath\.ado\ReactNative.Hermes.Windows.UAP.targets" -Destination "$OutputPath\build\uap\ReactNative.Hermes.Windows.targets" -force
 
     # process version information
 
