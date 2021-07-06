@@ -285,7 +285,7 @@ function Invoke-BuildAndCopy($SourcesPath, $WorkSpacePath, $OutputPath, $Platfor
     }
 
     New-Item -ItemType "directory" -Path "$OutputPath\lib\uap\" | Out-Null
-    New-Item -Name "$OutputPath\lib\uap\_._" -ItemType File
+    New-Item -Path "$OutputPath\lib\uap\" -Name "_._" -ItemType File
 
     $toolsPath = "$OutputPath\tools\native\$toolsConfiguration\$toolsPlatform"
     if (!(Test-Path -Path $toolsPath)) {
